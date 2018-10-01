@@ -23,46 +23,44 @@
 // clock_frequency: <frequency_in_mhz> MHz TODO
 
 
-module MatrixMult2 #(
-	parameter INCLUDE_MATRIXMULT2    = pa_MatrixMult2::INCLUDE_MATRIXMULT2,
-	parameter dataWidth = 8,
+module MatrixMult #(
+	parameter dataWidth,
 	parameter NsInPrevLayer,
 	parameter NsInNextLayer
 	)(
 	input logic clk,
 	input logic rst,
 	input logic enable,
-	input logic [NsInNextLayer-1:0][NsInPrevLayer-1:0][dataWidth-1:0] inputWeights,
-	input logic [NsInPrevLayer-1:0][dataWidth-1:0] inputActivation,
-	output logic [NsInNextLayer-1:0][dataWidth-1:0] outputActivation
-		
+	input logic signed [NsInNextLayer-1:0][NsInPrevLayer-1:0][dataWidth-1:0] inputWeights,
+	input logic signed [NsInPrevLayer-1:0][dataWidth-1:0] inputActivation,
+	output logic signed [NsInNextLayer-1:0][dataWidth-1:0] outputActivation
 	);
+	
+	logic signed [NsInPrevLayer-1:0][NsInNextLayer-1:0][dataWidth-1:0] outputActivation2D
 	
 	logic [dataWidth-1:0] temp;
 
-  generate
-    if (INCLUDE_MATRIXMULT2 == 1) begin : la_Include
-
-		always_ff @(posedge clk) begin
-			if (rst) begin
-				for (int i = 0; i < NsInNextLayer; i++)
-					outputActivation[i] <= {dataWidth{1'b0}};
-			end
-			else if (enable) begin
-				for (int i = 0; i < NsInNextLayer; i++) begin // This is the multiplication itself
-					temp = '0;
-					for (int j = 0; j < NsInPrevLayer; j++) begin
-						temp = temp + inputWeights[i][j] * inputActivation[j];
-					end
-					outputActivation[i] = temp;
-				end	
-			end
+	always_comb begin
+		for (int i = 0; i < NsInNextLayer; i++) begin
+			for (int j = 0; j < NsInPrevLayer; j++) begin
+				outputActivation[i] = outputActivation2D[i][j];
+			end // Nå ble jeg litt forvirret ..... JObb mer på torsdag
 		end
-
-    end
-    else begin : la_LeaveOut
-
-    end
-  endgenerate
+	end
+	
+	always_ff @(posedge clk) begin
+		if (rst) begin
+				outputActivation = '0;
+		end
+		else if (enable) begin
+				for (int i = 0; j < NsInPrevLayer; j++) begin
+					for () begin
+						outputActivation2D[0][0] <=  inputWeights[0][0] * inputActivation[0];
+						outputActivation2D[0]]1] <= inputWeights[0][1] * inputActivation[1];
+					
+					end	
+				end
+		end
+	end
 
 endmodule

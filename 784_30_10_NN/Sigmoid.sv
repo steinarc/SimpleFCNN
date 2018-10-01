@@ -1,6 +1,5 @@
-module NeuronLayer #(
-	parameter dataWidth,
-	parameter NoNeurons
+module Sigmoid #(
+	parameter dataWidth
 	)(
 	input logic clk,
 	input logic rst,
@@ -12,14 +11,17 @@ module NeuronLayer #(
 	
 	logic [NoNeurons-1:0][dataWidth-1:0] unsquashedData;
 	
-	for (int i = 0; i < NoNeurons; i++)
-		unsquashedData[i] <= biases[i] + iData[i];
-	
+	always_ff @(posedge clk)
+		for (int i = 0; i < NoNeurons; i++)
+			unsquashedData[i] <= biases[i] + iData[i];
+
 	Sigmoid #(
-	.dataWidth(dataWidth)
+		.dataWidth(dataWidth)
 	)sigmoid(
-	.iData(unsquashedData),
-	.oData(oData)
-	);
-	
+		.clk(clk),
+		.rst(rst),
+		.enable(enable),
+		.iData(unsquashedData),
+		.oData(oData));
+
 endmodule

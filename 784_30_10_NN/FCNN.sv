@@ -1,28 +1,28 @@
-/* Project NTNU/Nordic Semiconductor AS
+/* Project at NTNU for Nordic Semiconductor AS
 * 
 *  Author: Steinar Thune Christensen
 */
 module FCNN #(
 	parameter NoLayers = 3,
-	parameter dataWidth = 8
+	parameter dataWidth
 	)(
 	input logic clk,
 	input logic rst,
 	input logic enable,
-	input logic [783:0] w0 [29:0],
-	input logic [9:0] w1 [29:0],
-	input logic b0 [29:0],
-	input logic b1 [9:0],
-	input logic [dataWidth-1:0] iData [783:0],
-	output logic [dataWidth-1:0] oData [9:0]	
+	input logic [29:0][783:0][dataWidth-1:0] 	w0,
+	input logic [9:0][29:0][dataWidth-1:0] 		w1,
+	input logic [29:0][dataWidth-1:0] 			b0,
+	input logic [9:0][dataWidth-1:0] 			b1,
+	input logic [783:0][dataWidth-1:0] 			iData,
+	output logic [9:0][dataWidth-1:0] 			oData	
 	);
 	
 	//Weights are stored in two arrays, w0 one from input to hiddenLayer0
 	//Which gives the form 30x784. w1 is of the form 10x30.	
 
-	logic a0 [29:0];
-	logic a1 [9:0];
-	logic rawOutput [29:0];
+	logic [29:0][dataWidth-1:0] a0;
+	logic [9:0][dataWidth-1:0] a1;
+	logic [29:0][dataWidth-1:0] unweightedActivation;
 
 	//Modules in "chronological" order
 	MatrixMult #(
@@ -32,10 +32,10 @@ module FCNN #(
 	) matrixMult0 (
 		.clk(clk),
 		.rst(rst),
+		.enable(enable),
 		.inputWeights(w0),
 		.inputActivation(iData),
-		.outputActivation(a0)
-		);
+		.outputActivation(a0));
 
 	NeuronLayer #(
 		.NoNeurons(30), 
@@ -43,9 +43,10 @@ module FCNN #(
 	) hiddenLayer0 (
 		.clk(clk),
 		.rst(rst),
+		.enable(enable),
 		.biases(b0),
-		.iData(a0), 
-		.oData(rawOutput));
+		.iData(a0),
+		.oData(unweightedActivation));
 
 	MatrixMult #(
 		.dataWidth(dataWidth),
@@ -54,10 +55,10 @@ module FCNN #(
 	) matrixMult1 (
 		.clk(clk),
 		.rst(rst),
+		.enable(enable),
 		.inputWeights(w1),
-		.inputActivation(rawOutput),
-		.outputActivation(a1)
-		);
+		.inputActivation(unweightedActivation),
+		.outputActivation(a1));
 
 	NeuronLayer #(
 		.NoNeurons(10), 
@@ -65,6 +66,7 @@ module FCNN #(
 	) outputLayer (
 		.clk(clk),
 		.rst(rst),
+		.enable(enable),
 		.biases(b1),
 		.iData(a1), 
 		.oData(oData));
