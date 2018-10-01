@@ -1,8 +1,11 @@
-module #(
+/* Project NTNU/Nordic Semiconductor AS
+* 
+*  Author: Steinar Thune Christensen
+*/
+module FCNN #(
 	parameter NoLayers = 3,
 	parameter dataWidth = 8
-
-	) FCNN (
+	)(
 	input logic clk,
 	input logic rst,
 	input logic enable,
@@ -52,7 +55,7 @@ module #(
 		.clk(clk),
 		.rst(rst),
 		.inputWeights(w1),
-		.inputActivation(rawOutput)
+		.inputActivation(rawOutput),
 		.outputActivation(a1)
 		);
 

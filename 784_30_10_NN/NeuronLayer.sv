@@ -1,7 +1,7 @@
-module #(
+module NeuronLayer #(
 	parameter dataWidth = 8,
 	parameter 
-	) NeuronLayer (
+	)(
 	input logic clk,
 	input logic rst,
 	input logic enable,

@@ -1,0 +1,58 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/pro/sig_research/AI/work/stch/prosjektoppgave/SimpleFCNN/SimpleFCNN/784_30_10_NN
+vFCNN
+Z1 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+!s110 1538375897
+!i10b 1
+!s100 K0QlJ=52:b9?0ozH4iPM23
+I5lMf@2WV4:foeabzBkcd]3
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+!s105 FCNN_sv_unit
+S1
+R0
+w1538375895
+8FCNN.sv
+FFCNN.sv
+L0 1
+Z3 OL;L;10.4c;61
+r1
+!s85 0
+31
+!s108 1538375897.000000
+!s107 FCNN.sv|
+!s90 FCNN.sv|
+!i113 0
+Z4 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+n@f@c@n@n
+vMatrixMult
+R1
+!s110 1538375766
+!i10b 1
+!s100 0F1=>0i<iBd8O:4JLUL_12
+I?:>5:CmF=>NcSRM0hY?a_0
+R2
+!s105 MatrixMult_sv_unit
+S1
+R0
+w1538375745
+8MatrixMult.sv
+FMatrixMult.sv
+L0 1
+R3
+r1
+!s85 0
+31
+!s108 1538375766.000000
+!s107 MatrixMult.sv|
+!s90 MatrixMult.sv|
+!i113 0
+R4
+n@matrix@mult
