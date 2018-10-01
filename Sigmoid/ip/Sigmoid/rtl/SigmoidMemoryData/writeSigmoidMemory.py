@@ -9,7 +9,7 @@ if __name__== "__main__":
     dataWidth = 4
     fileName = "sigmoidMemory.txt"
     rang = np.arange(-4,4,8*2**(-dataWidth)) #Create range with stepsize
-    sig = np.zeros(2**dataWidth)
+    sig = [0] * 2**dataWidth
     k = 0
     for i in np.nditer(rang):
         sig[k] = (1.0/(1.0 + np.exp(-i)))
@@ -18,20 +18,22 @@ if __name__== "__main__":
     print(sig)
     print(len(sig))
 
-    sig_shifted = sig * 2**dataWidth
+    sig_shifted = [0] * 2**dataWidth
+	k = 0
+	for i in np.nditer(rang):
+		sig_shifted[k] = sig[k] * 2**(dataWidth)
+		k += 1
      
-    sig_shifted.astype(np.int64)
     print(sig_shifted)
     print(len(sig_shifted))
       
-    sig_quantized = sig_shifted
+"""    sig_quantized = sig_shifted
     for i in range (0, 2**dataWidth):
         sig_quantized[i] = np.floor(sig_shifted[i])
-        print(type(sig_shifted[i]))
 
     print(sig_quantized)
     print(len(sig_quantized))
-
+"""
     f = open(fileName,'w')
 
 
